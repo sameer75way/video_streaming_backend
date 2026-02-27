@@ -1,29 +1,31 @@
 from logging.config import fileConfig
 from sqlalchemy import create_engine, pool
 from alembic import context
-from app.core import settings
-from app.db import SQLModel
+
+from app.core.config import settings
+from app.db.base import Base
 
 # Alembic Config object
 config = context.config
 
-# Configure logging
+# Logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Metadata for autogenerate
-target_metadata = SQLModel.metadata
+# Use Base.metadata everywhere
+target_metadata = Base.metadata
+
+
+def get_sync_database_url():
+    # Convert asyncpg URL to sync URL for Alembic
+    return settings.DATABASE_URL.replace("+asyncpg", "")
 
 
 def run_migrations_offline():
-    """
-    Run migrations in 'offline' mode.
-    """
-    # Convert async URL to sync for offline mode
-    sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
+    url = get_sync_database_url()
 
     context.configure(
-        url=sync_url,
+        url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -34,17 +36,8 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    """
-    Run migrations in 'online' mode.
-    """
-
-    # IMPORTANT:
-    # Alembic does NOT support async engines.
-    # So we convert asyncpg URL to sync PostgreSQL driver.
-    sync_url = settings.DATABASE_URL.replace("+asyncpg", "")
-
     connectable = create_engine(
-        sync_url,
+        get_sync_database_url(),
         poolclass=pool.NullPool,
     )
 
