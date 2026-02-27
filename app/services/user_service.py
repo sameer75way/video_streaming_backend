@@ -3,6 +3,8 @@ from fastapi import HTTPException
 from app.models import User, Role
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+
+
 class UserService:
 
     @staticmethod
@@ -12,14 +14,12 @@ class UserService:
         current_user: User,
         db: AsyncSession,
     ):
-
-        # admins only
         if current_user.role.name != "ADMIN":
             raise HTTPException(status_code=403, detail="Not allowed")
 
         role_result = await db.execute(
             select(Role).where(Role.name == role_name)
-        ) 
+        )
         role = role_result.scalar_one_or_none()
 
         if not role:
@@ -35,10 +35,9 @@ class UserService:
 
         user.role_id = role.id
         await db.commit()
+        await db.refresh(user)
 
         return {"message": f"User role updated to {role_name}"}
-
-class UserService:
 
     @staticmethod
     async def list_users(
