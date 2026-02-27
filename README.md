@@ -6,6 +6,52 @@ This project is a backend system for video upload, processing, secure streaming,
 
 The implementation focuses on backend architecture, security, RBAC, and business logic. Video encoding and streaming file generation are simulated for backend-focused assessment. In production, this would integrate with object storage (e.g., S3) and an FFmpeg-based HLS/DASH pipeline.
 
+
+
+
+# 1. Clone Repository
+git clone https://github.com/sameer75way/video_streaming_backend.git
+cd video_streaming_backend
+
+# 2. Create Virtual Environment
+python -m venv venv
+source venv/bin/activate      # Mac/Linux
+# venv\Scripts\activate      # Windows
+
+# 3. Install Dependencies
+pip install -r requirements.txt
+
+# 4. Create .env File
+touch .env
+
+
+
+# In env
+
+DATABASE_URL=postgresql+asyncpg://sameer75:1234@localhost:5432/video_streaming_db
+
+SECRET_KEY=supersecretkey
+ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=15
+REFRESH_TOKEN_EXPIRE_DAYS=7
+
+DEFAULT_ADMIN_EMAIL=admin@platform.com
+DEFAULT_ADMIN_PASSWORD=Admin@123
+
+RATE_LIMIT_DEFAULT=60
+RATE_LIMIT_AUTH=20
+RATE_LIMIT_STREAM=20
+
+# 5. Create PostgreSQL Database
+
+
+
+# 6. Run Migrations
+python -m alembic upgrade head
+
+# 7. Start Server
+uvicorn main:app --reload
 ---
 
 ## Features
@@ -36,6 +82,28 @@ DEFAULT_ADMIN_PASSWORD
 The admin is created only once (idempotent seeding).
 
 ---
+
+Default Roles Created Automatically on Startup:
+ADMIN
+CREATOR
+VIEWER
+
+Default Admin Credentials:
+Email: admin@platform.com
+Password: Admin@123
+
+Core System Capabilities:
+- Role Based Access Control (ADMIN, CREATOR, VIEWER)
+- JWT Authentication (Access + Refresh Tokens)
+- Secure Stream Token (1 minute expiry)
+- Video Lifecycle: UPLOADED → PROCESSING → READY
+- Soft Delete + Restore
+- Paid Video Purchase Flow
+- Subscription Access Model
+- Revenue Split (80% Creator / 20% Platform)
+- Audit Logging Middleware
+- Rate Limiting (Auth, Stream, Default)
+- Analytics (Views, Unique Views, Likes, Dislikes)
 
 ### Video Management
 - Video creation (CREATOR)
