@@ -257,13 +257,3 @@ GET /api/v1/audit/
   - FFmpeg-based HLS/DASH pipeline
   - Distributed worker (e.g., Celery)
 
----
-
-This project is structured for backend assessment and demonstrates:
-
-- Clean service-layer architecture
-- RBAC enforcement
-- Secure streaming design
-- Monetization logic
-- Analytics aggregation
-- Environment-based configuration
