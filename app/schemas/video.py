@@ -25,4 +25,4 @@ class VideoUpdate(BaseModel):
 
 
 class VideoStatusUpdate(BaseModel):
-    status: str  # UPLOADED, PROCESSING, READY
+    status: str  

@@ -12,7 +12,7 @@ class Video(SQLModel, table=True):
     description: Optional[str] = None
     is_paid: bool = False
     price: Optional[float] = None
-    status: str = Field(default="UPLOADED")  # UPLOADED, PROCESSING, READY
+    status: str = Field(default="UPLOADED")  
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_deleted: bool = Field(default=False)
     deleted_at: Optional[datetime] = None   

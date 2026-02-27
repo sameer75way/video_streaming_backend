@@ -46,7 +46,7 @@ class AnalyticsService:
         if not video:
             raise HTTPException(status_code=404, detail="Video not found")
 
-        # Only creator or admin
+        # check perms
         if user.role.name != "ADMIN" and video.creator_id != user.id:
             raise HTTPException(status_code=403, detail="Not allowed")
 

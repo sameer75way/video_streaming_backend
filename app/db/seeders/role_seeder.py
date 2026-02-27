@@ -7,7 +7,7 @@ async def seed_roles_and_admin(db: AsyncSession):
 
     roles = ["ADMIN", "CREATOR", "VIEWER"]
 
-    # Seed roles
+    # setup roles
     for role_name in roles:
         result = await db.execute(
             select(Role).where(Role.name == role_name)
@@ -17,7 +17,7 @@ async def seed_roles_and_admin(db: AsyncSession):
 
     await db.commit()
 
-    # Check if default admin exists
+    # init admin if missing
     result = await db.execute(
         select(User).where(User.email == settings.DEFAULT_ADMIN_EMAIL)
     )

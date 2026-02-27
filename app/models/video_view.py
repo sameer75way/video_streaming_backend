@@ -9,5 +9,5 @@ class VideoView(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
     video_id: int = Field(foreign_key="videos.id")
-    watch_time: Optional[int] = 0  # seconds watched
+    watch_time: Optional[int] = 0  
     viewed_at: datetime = Field(default_factory=datetime.utcnow)

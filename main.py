@@ -26,7 +26,7 @@ async def audit_middleware(request: Request, call_next):
 
     response = await call_next(request)
 
-    # Skip health check
+    # ignore health check logs
     if "/health" in request.url.path:
         return response
 

@@ -13,7 +13,7 @@ class UserService:
         db: AsyncSession,
     ):
 
-        # Only admin can change roles
+        # admins only
         if current_user.role.name != "ADMIN":
             raise HTTPException(status_code=403, detail="Not allowed")
 

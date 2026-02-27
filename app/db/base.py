@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-# Import models so Alembic sees them
+# need these for alembic
 from app.models import User, Role
 
 __all__ = ["SQLModel"]
